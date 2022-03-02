@@ -1,9 +1,3 @@
-const nextJest = require('next/jest')
-
-const createJestConfig = nextJest({
-  dir: './',
-})
-
 const customJestConfig = {
   // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
@@ -13,6 +7,7 @@ const customJestConfig = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
   },
+  collectCoverageFrom: ['<rootDir>/components/**/*.tsx', '<rootDir>/pages/**/*.tsx', '<rootDir>/hooks/**/*.tsx'],
 }
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = customJestConfig
