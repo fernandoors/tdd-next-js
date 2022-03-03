@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import type { NextPage } from 'next';
 
-import axios from 'axios';
-
 import Search from 'components/search';
 import ProductCard from 'components/product-card';
 import useFetchProducts from 'hooks/use-fetch-products';
+import { useCartStore } from 'store/cart';
 const Home: NextPage = () => {
   const { products, error } = useFetchProducts();
   const [term, setTerm] = useState('');
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
+  const addToCart = useCartStore(store=> store.actions.add)
   useEffect(() => {
     if (!term) {
       setLocalProducts(products);
@@ -34,8 +34,12 @@ const Home: NextPage = () => {
           {productLength === 1 ? '1 Product' : `${productLength} Products`}
         </span>
         {showProducts &&
-          localProducts.map((product, key) => (
-            <ProductCard key={key} product={product} addToCart={() => {}} />
+          localProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              addToCart={addToCart}
+            />
           ))}
         {showEmptyProducts && <h4 data-testid="no-products">No Products</h4>}
         {error ? (
