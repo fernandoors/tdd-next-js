@@ -7,7 +7,12 @@ const customJestConfig = {
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
   },
-  collectCoverageFrom: ['<rootDir>/components/**/*.tsx', '<rootDir>/pages/**/*.tsx', '<rootDir>/hooks/**/*.tsx'],
+  collectCoverageFrom: [
+    '<rootDir>/components/**/*.tsx',
+    '<rootDir>/pages/**/*.tsx',
+    '<rootDir>/hooks/**/*.tsx',
+    '<rootDir>/store/**/*.tsx'
+  ],
 }
 
 module.exports = customJestConfig
