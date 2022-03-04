@@ -1,10 +1,13 @@
 import { useState } from 'react';
 
+import { useCartStore } from 'store/cart';
+
 interface CartItemProps {
   product: Product;
 }
 export default function CartItem({ product }: CartItemProps) {
   const [quantity, setQuantity] = useState(1);
+  const { remove } = useCartStore((store) => store.actions);
 
   const increase = () => setQuantity((prev) => prev + 1);
 
@@ -13,6 +16,7 @@ export default function CartItem({ product }: CartItemProps) {
   return (
     <div data-testid="cart-item" className="flex justify-between mt-6">
       <div className="flex">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="h-20 w-20 object-cover rounded"
           src={product.image}
@@ -21,8 +25,12 @@ export default function CartItem({ product }: CartItemProps) {
         />
         <div className="mx-3">
           <h3 className="text-sm text-gray-600">{product.title}</h3>
+          <button data-testid="remove-product" onClick={() => remove(product)}>
+            remove
+          </button>
           <div className="flex items-center mt-2">
             <button
+              data-testid="decrease"
               onClick={decrease}
               className="text-gray-500 focus:outline-none focus:text-gray-600"
             >
@@ -42,6 +50,7 @@ export default function CartItem({ product }: CartItemProps) {
               {quantity}
             </span>
             <button
+              data-testid="increase"
               onClick={increase}
               className="text-gray-500 focus:outline-none focus:text-gray-600"
             >
