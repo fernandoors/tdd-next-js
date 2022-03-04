@@ -25,6 +25,8 @@ interface Actions {
   reset(): void;
   toggle(): void;
   add(product: Product): void;
+  remove(product: Product): void;
+  removeAll(): void;
 }
 
 interface Store {
