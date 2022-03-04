@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
-    "test:unit": "jest --config=jest-unit.config.js",
-    "test:unit:watch": "jest --config=jest-unit.config.js --watchAll",
-    "test:integration": "jest --config=jest-integration.config.js",
-    "test:integration:watch": "jest --config=jest-integration.config.js --watchAll",
-    "test:coverage": "jest --coverage",
+    "test": "jest -i",
+    "test:watch": "yarn test --watchAll",
+    "test:unit": "yarn test --config=jest-unit.config.js",
+    "test:unit:watch": "yarn test --config=jest-unit.config.js --watchAll",
+    "test:integration": "yarn test --config=jest-integration.config.js",
+    "test:integration:watch": "yarn test --config=jest-integration.config.js --watchAll",
+    "test:coverage": "yarn test --coverage",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -18,6 +18,7 @@
   "dependencies": {
     "@tailwindcss/ui": "^0.7.2",
     "axios": "^0.26.0",
+    "immer": "^9.0.12",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
