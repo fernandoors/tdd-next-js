@@ -1,3 +1,4 @@
+import produce from 'immer';
 import create from 'zustand';
 
 const initialState = {
@@ -5,27 +6,43 @@ const initialState = {
   products: [],
 };
 
-const addProduct = (store: Store, product: Product) => {
-  if (store.state.products.includes(product)) return store.state.products;
-  return [...store.state.products, product];
-};
+export const useCartStore = create<Store>((set) => {
+  const setState = (fn: (store: Store) => void) => set(produce(fn));
+  return {
+    state: { ...initialState },
 
-export const useCartStore = create<Store>((set) => ({
-  state: { ...initialState },
-
-  actions: {
-    reset: () => {
-      set(() => ({ state: { ...initialState } }));
+    actions: {
+      reset() {
+        setState((store: Store) => {
+          store.state = { ...initialState };
+        });
+      },
+      toggle() {
+        setState(({ state }: Store) => {
+          state.open = !state.open;
+        });
+      },
+      add(product) {
+        setState(({ state }: Store) => {
+          const productAlreadyExists = state.products.some(
+            ({ id }) => id === product.id,
+          );
+          if (!productAlreadyExists) {
+            state.products.push(product);
+            state.open = true;
+          }
+        });
+      },
+      remove(product) {
+        setState(({ state }: Store) => {
+          state.products = state.products.filter(({ id }) => id !== product.id);
+        });
+      },
+      removeAll() {
+        setState(({ state }: Store) => {
+          state.products = [];
+        });
+      },
     },
-    toggle: () => {
-      set((store: Store) => ({
-        state: { ...store.state, open: !store.state.open },
-      }));
-    },
-    add: (product) => {
-      set((store: Store) => ({
-        state: { open: true, products: addProduct(store, product) },
-      }));
-    },
-  },
-}));
+  };
+});
