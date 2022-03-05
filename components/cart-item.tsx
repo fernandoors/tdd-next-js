@@ -1,17 +1,10 @@
-import { useState } from 'react';
-
 import { useCartStore } from 'store/cart';
 
 interface CartItemProps {
   product: Product;
 }
 export default function CartItem({ product }: CartItemProps) {
-  const [quantity, setQuantity] = useState(1);
-  const { remove } = useCartStore((store) => store.actions);
-
-  const increase = () => setQuantity((prev) => prev + 1);
-
-  const decrease = () => setQuantity((prev) => (!prev ? 0 : prev - 1));
+  const { remove, increase, decrease } = useCartStore((store) => store.actions);
 
   return (
     <div data-testid="cart-item" className="flex justify-between mt-6">
@@ -31,7 +24,7 @@ export default function CartItem({ product }: CartItemProps) {
           <div className="flex items-center mt-2">
             <button
               data-testid="decrease"
-              onClick={decrease}
+              onClick={() => decrease(product)}
               className="text-gray-500 focus:outline-none focus:text-gray-600"
             >
               <svg
@@ -47,11 +40,11 @@ export default function CartItem({ product }: CartItemProps) {
               </svg>
             </button>
             <span data-testid="quantity" className="text-gray-700 mx-2">
-              {quantity}
+              {!!product.quantity ? product.quantity : 0}
             </span>
             <button
               data-testid="increase"
-              onClick={increase}
+              onClick={() => increase(product)}
               className="text-gray-500 focus:outline-none focus:text-gray-600"
             >
               <svg
