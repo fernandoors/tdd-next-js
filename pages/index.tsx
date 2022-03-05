@@ -32,6 +32,7 @@ const Home: NextPage = () => {
       <div className="container mx-auto px-6">
         <h3 className="text-gray-700 text-2xl font-medium">Wrist Watch</h3>
         <span className="mt-3 text-sm text-gray-500">
+          {productLength === 1 ? '1 Product' : `${productLength} Products`}
           {error ? (
             <h5 data-testid="error-get-products">Erro to load products</h5>
           ) : null}
