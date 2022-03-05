@@ -13,6 +13,8 @@ describe('Cart Store', () => {
 
   let add: (product: Product) => void;
   let remove: (product: Product) => void;
+  let increase: (product: Product) => void;
+  let decrease: (product: Product) => void;
   let removeAll: () => void;
   let toggle: () => void;
   let reset: () => void;
@@ -23,6 +25,8 @@ describe('Cart Store', () => {
     result = renderHook(() => useCartStore()).result;
     add = result.current.actions.add;
     remove = result.current.actions.remove;
+    increase = result.current.actions.increase;
+    decrease = result.current.actions.decrease;
     removeAll = result.current.actions.removeAll;
     toggle = result.current.actions.toggle;
     reset = result.current.actions.reset;
@@ -61,6 +65,46 @@ describe('Cart Store', () => {
 
     expect(result.current.state.products).toHaveLength(2);
   });
+
+  it('should assign 1 as initial quantity on product add()', () => {
+    const product = server.create<any, any, Product>('product');
+    act(() => add(product));
+
+    expect(result.current.state.products[0].quantity).toBe(1);
+  });
+
+  it('should increase quantity', () => {
+    const product = server.create<any, any, Product>('product');
+    act(() => {
+      add(product)
+      increase(product)
+    });
+
+    expect(result.current.state.products[0].quantity).toBe(2);
+  });
+
+   it('should decrease quantity', () => {
+     const product = server.create<any, any, Product>('product');
+     act(() => {
+       add(product);
+       decrease(product);
+     });
+
+     expect(result.current.state.products[0].quantity).toBe(0);
+   });
+
+   it('should decrease quantity not allowed less than 0', () => {
+     const product = server.create<any, any, Product>('product');
+     act(() => {
+       add(product);
+       decrease(product);
+       decrease(product);
+     });
+
+     expect(result.current.state.products[0].quantity).toBe(0);
+     expect(result.current.state.products[0].quantity).not.toBe(-1);
+   });
+
   it('should reset store to initial state', async () => {
     const products = server.createList<any, any, Product>('product', 2);
     for (const product of products) {

@@ -28,8 +28,33 @@ export const useCartStore = create<Store>((set) => {
             ({ id }) => id === product.id,
           );
           if (!productAlreadyExists) {
+            product.quantity = 1;
             state.products.push(product);
             state.open = true;
+          }
+        });
+      },
+      increase(product) {
+        setState(({ state }: Store) => {
+          const localProduct = state.products.find(
+            ({ id }) => product.id === id,
+          );
+          if (!!localProduct && localProduct.quantity !== undefined) {
+            localProduct.quantity++;
+          }
+        });
+      },
+      decrease(product) {
+        setState(({ state }: Store) => {
+          const localProduct = state.products.find(
+            ({ id }) => product.id === id,
+          );
+          if (
+            !!localProduct &&
+            localProduct.quantity !== undefined &&
+            localProduct.quantity > 0
+          ) {
+            localProduct.quantity--;
           }
         });
       },
