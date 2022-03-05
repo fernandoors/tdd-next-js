@@ -3,6 +3,7 @@ interface Product {
   title: string;
   image: string;
   price: string;
+  quantity?: number;
 }
 
 interface User {
@@ -25,6 +26,8 @@ interface Actions {
   reset(): void;
   toggle(): void;
   add(product: Product): void;
+  increase(product: Product): void;
+  decrease(product: Product): void;
   remove(product: Product): void;
   removeAll(): void;
 }
