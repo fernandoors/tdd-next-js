@@ -66,7 +66,7 @@ describe('Cart', () => {
     });
   });
 
-  it('should remove all products', () => {
+  it('should remove all products when clear cart button is clicked', () => {
     const products = server.createList<any, any, Product>('product', 2);
 
     hooksAct(() => products.forEach(add));
